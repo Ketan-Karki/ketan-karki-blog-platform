@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { Category } from "../../categories/category.entity";
 import { Post } from "../../posts/post.entity";
 import * as slug from "slug";
+import { HashnodeService } from "../../hashnode/hashnode.service";
 
 @Injectable()
 export class SeedService {
@@ -11,12 +12,14 @@ export class SeedService {
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
     @InjectRepository(Post)
-    private postsRepository: Repository<Post>
+    private postsRepository: Repository<Post>,
+    private hashnodeService: HashnodeService
   ) {}
 
   async seedAll() {
     await this.seedCategories();
     await this.seedPosts();
+    await this.importHashnodePosts();
     console.log("✅ Database seeded successfully!");
   }
 
@@ -208,6 +211,21 @@ What matters most is maintaining a growth mindset and enjoying the journey.`,
       if (!existing) {
         await this.postsRepository.save(postData);
       }
+    }
+  }
+
+  private async importHashnodePosts() {
+    try {
+      console.log("📝 Importing blog posts from Hashnode...");
+
+      // Import specific Hashnode post
+      await this.hashnodeService.importHashnodePost(
+        "https://ketankarki-devopsinsights.hashnode.dev/setting-up-a-self-hosted-github-runner-my-journey-in-sre-bootcamp"
+      );
+
+      console.log("✅ Hashnode posts imported successfully!");
+    } catch (error) {
+      console.error("❌ Error importing Hashnode posts:", error);
     }
   }
 }

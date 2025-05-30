@@ -1,44 +1,52 @@
 <!-- filepath: /Users/ketan/Learning/Slow-Down-TIme/slow-down-time-client/components/BlogCard.vue -->
 <template>
-  <article class="card p-6 hover:shadow-lg transition-shadow">
-    <div class="mb-4">
-      <span class="inline-block bg-primary-100 text-primary-700 text-sm px-3 py-1 rounded-full">
-        {{ post.category?.name || 'Uncategorized' }}
-      </span>
+  <NuxtLink
+    :to="`/blog/${post.slug}`"
+    class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+  >
+    <div class="p-6 flex flex-col flex-grow">
+      <div class="flex items-center mb-3">
+        <span
+          class="bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded"
+        >
+          {{ post.category?.name || "Uncategorized" }}
+        </span>
+        <span class="text-gray-500 text-xs ml-2">
+          {{ formatDate(post.publishedAt) }}
+        </span>
+      </div>
+
+      <h2 class="text-xl font-bold text-gray-900 mb-2">{{ post.title }}</h2>
+
+      <p class="text-gray-600 mb-4 flex-grow line-clamp-3">
+        {{ post.excerpt }}
+      </p>
+
+      <div class="flex items-center justify-between text-sm text-gray-500">
+        <span>{{ post.readTime }} min read</span>
+        <span class="font-medium text-primary-600">Read more →</span>
+      </div>
     </div>
-    
-    <h2 class="text-xl font-semibold text-gray-900 mb-3">
-      <NuxtLink :to="`/blog/${post.slug}`" class="hover:text-primary-600 transition-colors">
-        {{ post.title }}
-      </NuxtLink>
-    </h2>
-    
-    <p class="text-gray-600 mb-4 line-clamp-3">
-      {{ post.excerpt }}
-    </p>
-    
-    <div class="flex justify-between items-center text-sm text-gray-500">
-      <time :datetime="post.publishedAt">
-        {{ formatDate(post.publishedAt) }}
-      </time>
-      <span>{{ post.readTime }} min read</span>
-    </div>
-  </article>
+  </NuxtLink>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   post: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
+// Format the date in a nice human-readable format
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 </script>

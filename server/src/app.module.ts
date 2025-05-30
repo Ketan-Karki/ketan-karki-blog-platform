@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PostsModule } from "./posts/posts.module";
 import { CategoriesModule } from "./categories/categories.module";
 import { SeedModule } from "./database/seeds/seed.module";
+import { HashnodeModule } from "./hashnode/hashnode.module";
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SeedModule } from "./database/seeds/seed.module";
     }),
     PostsModule,
     CategoriesModule,
+    HashnodeModule,
     SeedModule,
   ],
 })

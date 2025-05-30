@@ -1,19 +1,18 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { PostsService } from "./posts.service";
+import { Post } from "./post.entity";
 
 @Controller("posts")
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async findAll(@Query("page") page = 1, @Query("limit") limit = 10) {
-    const data = await this.postsService.findAll(page, limit);
-    return { data };
+  async findAll(@Query("category") categorySlug?: string): Promise<Post[]> {
+    return this.postsService.findAll(categorySlug);
   }
 
   @Get(":slug")
-  async findOne(@Param("slug") slug: string) {
-    const data = await this.postsService.findBySlug(slug);
-    return { data };
+  async findOne(@Param("slug") slug: string): Promise<Post> {
+    return this.postsService.findOne(slug);
   }
 }
