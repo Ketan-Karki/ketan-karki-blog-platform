@@ -6,11 +6,16 @@ async function bootstrap() {
   const logger = new Logger("Bootstrap");
   const app = await NestFactory.create(AppModule);
 
-  // Configure CORS properly for your frontend
+  // Configure CORS to allow requests from both development and production frontend
   app.enableCors({
-    origin: ["http://localhost:3000", "http://localhost:5173"], // Add your frontend URL(s)
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    origin: [
+      "http://localhost:3000", // Local development frontend
+      "http://159.65.154.80:3000", // Production frontend
+      /^https?:\/\/159\.65\.154\.80(:\d+)?$/, // Any port on your IP
+    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   });
 
   app.useGlobalPipes(
@@ -23,8 +28,9 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
 
-  // Use port 3001 as you mentioned
-  await app.listen(3001);
+  // Start the server
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
   logger.log(`Application is running on: ${await app.getUrl()}`);
   logger.log("API endpoints available at /api/*");
 }

@@ -20,7 +20,7 @@ export const useBlogStore = defineStore('blog', {
         const config = useRuntimeConfig()
         
         // Build URL with optional category filter
-        let url = `${config.public.apiBase}/posts`
+        let url = `${config.public.apiBase}/api/posts`
         if (categorySlug) {
           url += `?category=${categorySlug}`
         }
