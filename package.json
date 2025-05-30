@@ -1,0 +1,16 @@
+{
+  "name": "slow-down-time",
+  "version": "1.0.0",
+  "description": "Personal blogging site with Nuxt3 and NestJS",
+  "scripts": {
+    "dev:client": "cd slow-down-time-client && npm run dev",
+    "dev:server": "cd slow-down-time-server && npm run start:dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build:client": "cd slow-down-time-client && npm run build",
+    "build:server": "cd slow-down-time-server && npm run build",
+    "deploy": "./deploy.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

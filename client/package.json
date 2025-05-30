@@ -1,0 +1,28 @@
+{
+  "name": "slow-down-time-client",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.8.4",
+    "@tailwindcss/typography": "^0.5.16",
+    "nuxt": "^3.8.0"
+  },
+  "dependencies": {
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@vueuse/nuxt": "^10.5.0",
+    "marked": "^15.0.12",
+    "pinia": "^2.1.7"
+  },
+  "imports": {
+    "#internal/nuxt": "./.nuxt/dist/server",
+    "#internal/nuxt/*": "./.nuxt/dist/server/*"
+  }
+}
