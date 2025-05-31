@@ -11,7 +11,9 @@ async function bootstrap() {
     origin: [
       "http://localhost:3000", // Local development frontend
       "http://159.65.154.80:3000", // Production frontend
-      /^https?:\/\/159\.65\.154\.80(:\d+)?$/, // Any port on your IP
+      /^https?:\/\/159\.65\.154\.80(:\d+)?$/, // Any port on your IP,
+      "https://ketankarki.wiki",
+      "https://www.ketankarki.wiki",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
