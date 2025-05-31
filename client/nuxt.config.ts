@@ -31,7 +31,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: process.env.NODE_ENV === "production" 
-        ? "http://159.65.154.80:3001" 
+        ? "https://ketankarki.wiki" 
         : "http://localhost:3001",
     },
   },
