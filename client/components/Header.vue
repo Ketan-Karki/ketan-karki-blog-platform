@@ -11,6 +11,9 @@
           <NuxtLink to="/" class="text-gray-700 hover:text-primary-600 transition-colors">
             Home
           </NuxtLink>
+          <NuxtLink to="/daily-blog" class="text-gray-700 hover:text-primary-600 transition-colors">
+            Daily Blog
+          </NuxtLink>
           <NuxtLink to="/about" class="text-gray-700 hover:text-primary-600 transition-colors">
             About
           </NuxtLink>

@@ -5,6 +5,7 @@ import { PostsModule } from "./posts/posts.module";
 import { CategoriesModule } from "./categories/categories.module";
 import { SeedModule } from "./database/seeds/seed.module";
 import { HashnodeModule } from "./hashnode/hashnode.module";
+import { TwitterModule } from "./twitter/twitter.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { HashnodeModule } from "./hashnode/hashnode.module";
     PostsModule,
     CategoriesModule,
     HashnodeModule,
+    TwitterModule,
     SeedModule,
   ],
 })

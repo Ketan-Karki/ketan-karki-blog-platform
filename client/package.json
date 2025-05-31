@@ -18,8 +18,10 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/nuxt": "^10.5.0",
+    "date-fns": "^4.1.0",
     "marked": "^15.0.12",
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "twitter-api-v2": "^1.23.2"
   },
   "imports": {
     "#internal/nuxt": "./.nuxt/dist/server",

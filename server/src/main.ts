@@ -1,6 +1,14 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { Logger, ValidationPipe } from "@nestjs/common";
+import { randomUUID } from "crypto";
+
+// Patch the global crypto object for Node.js v18 in production
+if (!global.crypto) {
+  global.crypto = {
+    randomUUID
+  } as any;
+}
 
 async function bootstrap() {
   const logger = new Logger("Bootstrap");
