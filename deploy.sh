@@ -32,6 +32,7 @@ scp /Users/ketan/Learning/Slow-Down-Time/client-build.tar.gz \
     /Users/ketan/Learning/Slow-Down-Time/server.tar.gz \
     /Users/ketan/Learning/Slow-Down-Time/start.sh \
     /Users/ketan/Learning/Slow-Down-Time/client/ecosystem.config.js \
+    /Users/ketan/Learning/Slow-Down-Time/server/.env.production \
     siu:/home/ketan/
 
 # 6. Extract archives on the server
@@ -45,8 +46,9 @@ mkdir -p ~/slow-down-time/server
 tar -xzf ~/server.tar.gz -C ~/slow-down-time
 tar -xzf ~/client-build.tar.gz -C ~/slow-down-time/client/.output
 
-# Move ecosystem config to client directory
+# Move ecosystem config to client directory and .env.production to server directory
 mv ~/ecosystem.config.js ~/slow-down-time/client/
+mv ~/.env.production ~/slow-down-time/server/.env
 '
 
 # 7. Run start script on server

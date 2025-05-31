@@ -67,6 +67,7 @@ typings/
 .env.test.local
 .env.production.local
 .env.staging
+.env.production
 
 # parcel-bundler cache
 .cache
