@@ -1,11 +1,10 @@
-<!-- filepath: /Users/ketan/Learning/Slow-Down-TIme/slow-down-time-client/pages/index.vue -->
 <template>
   <div class="flex flex-col min-h-screen bg-gray-50">
     <Header />
 
     <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Slow Down Time</h1>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Ketan's Blog</h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
           A personal blog about development, life, and everything in between.
         </p>
@@ -57,7 +56,7 @@ onMounted(async () => {
 });
 
 useHead({
-  title: "Slow Down Time - Personal Blog",
+  title: "Ketan's Blog - Personal Blog",
   meta: [
     {
       name: "description",

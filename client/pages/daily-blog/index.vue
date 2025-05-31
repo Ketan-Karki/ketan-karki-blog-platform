@@ -1,32 +1,52 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex flex-col">
+  <div class="min-h-screen bg-gray-50 flex flex-col">
     <Header />
-
+    
+    <!-- Notification Toast -->
     <div
       v-if="notification.show"
-      class="fixed top-4 right-4 max-w-sm p-4 rounded-lg shadow-lg transition-all duration-300 transform z-50"
+      class="fixed top-4 right-4 max-w-sm p-4 rounded-lg shadow-md transition-all duration-300 transform z-50 flex items-center"
       :class="{
-        'bg-green-100 text-green-800 border border-green-200':
+        'bg-green-50 text-green-800 border-l-4 border-green-500':
           notification.type === 'success',
-        'bg-red-100 text-red-800 border border-red-200':
+        'bg-red-50 text-red-800 border-l-4 border-red-500':
           notification.type === 'error',
-        'bg-yellow-100 text-yellow-800 border border-yellow-200':
+        'bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500':
           notification.type === 'warning',
       }"
     >
-      <div class="flex justify-between items-center">
-        <p>{{ notification.message }}</p>
+      <div class="flex justify-between items-center w-full">
+        <div class="flex items-center">
+          <!-- Success Icon -->
+          <svg v-if="notification.type === 'success'" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          <!-- Error Icon -->
+          <svg v-if="notification.type === 'error'" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+          </svg>
+          <!-- Warning Icon -->
+          <svg v-if="notification.type === 'warning'" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+          </svg>
+          <p>{{ notification.message }}</p>
+        </div>
         <button
           @click="clearNotification"
-          class="ml-4 text-gray-500 hover:text-gray-700"
+          class="ml-4 text-gray-500 hover:text-gray-700 focus:outline-none"
         >
-          &times;
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
         </button>
       </div>
     </div>
 
-    <main class="flex-grow container mx-auto py-8 px-4">
-      <h1 class="text-3xl font-bold text-center mb-8">Daily Blog</h1>
+    <main class="flex-grow max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-900">Daily Blog</h1>
+        <p class="mt-2 text-lg text-gray-600">Follow my journey through daily tweets</p>
+      </div>
 
       <!-- Loading State -->
       <div
@@ -100,113 +120,101 @@
           <span>{{ refreshing ? "Refreshing..." : "Refresh Tweets" }}</span>
         </button>
       </div>
-
-      <div v-else class="flex flex-col gap-8 p-6 max-w-7xl mx-auto w-full">
-        <!-- Controls Section -->
-        <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-          <div
-            class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+      
+      <!-- Date Filter and Controls Section -->
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-semibold text-gray-800">Date Filter</h2>
+          
+          <!-- Refresh Button (moved to the right side of the header) -->
+          <button
+            @click="refreshData"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            :disabled="refreshing"
           >
-            <!-- Date Range Picker -->
-            <div class="w-full md:w-2/3">
-              <h2 class="text-xl font-semibold mb-5 text-gray-800">
-                Filter by Date Range
-              </h2>
-              <div
-                class="flex flex-col sm:flex-row items-start sm:items-end gap-4"
-              >
-                <div class="w-full sm:w-auto">
-                  <label
-                    for="start-date"
-                    class="block text-sm font-medium text-gray-700 mb-2"
-                    >From</label
-                  >
-                  <input
-                    id="start-date"
-                    v-model="startDate"
-                    type="date"
-                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
-                  />
-                </div>
-                <div class="w-full sm:w-auto">
-                  <label
-                    for="end-date"
-                    class="block text-sm font-medium text-gray-700 mb-2"
-                    >To</label
-                  >
-                  <input
-                    id="end-date"
-                    v-model="endDate"
-                    type="date"
-                    class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
-                  />
-                </div>
-                <div class="flex gap-2 mt-4 sm:mt-0">
-                  <button
-                    @click="applyDateRange"
-                    class="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                  >
-                    Apply Filter
-                  </button>
-                  <button
-                    v-if="isFiltered"
-                    @click="resetDateFilter"
-                    class="inline-flex items-center px-5 py-2.5 border border-gray-300 text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
+            <svg
+              v-if="refreshing"
+              class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <svg
+              v-else
+              class="-ml-1 mr-2 h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+            <span>{{ refreshing ? "Refreshing..." : "Refresh Tweets" }}</span>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="relative">
+            <label
+              for="startDate"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Start Date</label
+            >
+            <div>
+              <input
+                type="date"
+                id="startDate"
+                v-model="startDate"
+                @change="applyDateFilter"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+              />
             </div>
-
-            <!-- Refresh Button -->
-            <div class="w-full md:w-auto">
-              <button
-                @click="refreshData"
-                class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-105"
-                :disabled="refreshing"
-              >
-                <svg
-                  v-if="refreshing"
-                  class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                <svg
-                  v-else
-                  class="mr-2 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
-                <span>{{
-                  refreshing ? "Refreshing..." : "Refresh Tweets"
-                }}</span>
-              </button>
+          </div>
+          <div class="relative">
+            <label
+              for="endDate"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >End Date</label
+            >
+            <div>
+              <input
+                type="date"
+                id="endDate"
+                v-model="endDate"
+                @change="applyDateFilter"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+              />
             </div>
+          </div>
+          <div class="flex items-end">
+            <button
+              @click="resetDateFilter"
+              class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors flex items-center justify-center"
+            >
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Reset Filter
+            </button>
           </div>
         </div>
 
@@ -432,6 +440,26 @@ const isFiltered = computed(() => {
   return !!startDate.value || !!endDate.value;
 });
 
+// Apply date filter
+const applyDateFilter = () => {
+  currentPage.value = 1; // Reset to first page when filter changes
+  
+  if (startDate.value && endDate.value) {
+    const start = new Date(startDate.value);
+    const end = new Date(endDate.value);
+    if (start > end) {
+      showNotification("Start date cannot be after end date", "error");
+      startDate.value = "";
+      endDate.value = "";
+      return;
+    }
+    showNotification("Date filter applied successfully", "success");
+  } else if (startDate.value || endDate.value) {
+    // Show notification if at least one date is set
+    showNotification("Date filter applied successfully", "success");
+  }
+};
+
 // Notification system
 const notification = ref({
   show: false,
@@ -468,7 +496,11 @@ const filteredTweets = computed(() => {
   }
 
   if (!startDate.value && !endDate.value) {
-    return dailyBlogStore.tweets;
+    // Always sort tweets by date (newest first) even when no filters are applied
+    return [...dailyBlogStore.tweets].sort((a, b) => {
+      if (!a.createdAt || !b.createdAt) return 0;
+      return parseISO(b.createdAt).getTime() - parseISO(a.createdAt).getTime();
+    });
   }
 
   return dailyBlogStore.tweets
@@ -552,25 +584,7 @@ const goToLastPage = () => {
   }
 };
 
-// Date filtering functions
-function applyDateRange() {
-  if (startDate.value && endDate.value) {
-    const start = parseISO(startDate.value);
-    const end = parseISO(endDate.value);
-
-    if (isAfter(start, end)) {
-      showNotification(
-        "Start date must be before or equal to end date",
-        "error"
-      );
-      return;
-    }
-  }
-
-  // Reset to first page when filter is applied
-  currentPage.value = 1;
-  showNotification("Date filter applied successfully", "success");
-}
+// This function is now replaced by applyDateFilter
 
 const resetDateFilter = () => {
   startDate.value = "";

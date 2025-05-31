@@ -1,10 +1,9 @@
-<!-- filepath: /Users/ketan/Learning/Slow-Down-TIme/slow-down-time-client/components/Header.vue -->
 <template>
   <header class="bg-white shadow-sm border-b border-gray-200">
     <nav class="max-w-6xl mx-auto px-4 py-4">
       <div class="flex justify-between items-center">
         <NuxtLink to="/" class="text-2xl font-bold text-primary-600">
-          Slow Down Time
+          Ketan's Blog
         </NuxtLink>
         
         <div class="flex space-x-6">
