@@ -44,41 +44,30 @@
 
 <script setup>
 import { marked } from 'marked';
+import moment from 'moment';
 
 const route = useRoute();
 const blogStore = useBlogStore();
 
-// Get the slug from the route
 const { slug } = route.params;
 
-// Fetch the specific post if not already loaded
 onMounted(async () => {
   if (!blogStore.posts.length) {
     await blogStore.fetchPosts();
   }
 });
 
-// Find the post with the matching slug
 const post = computed(() => {
   return blogStore.posts.find(p => p.slug === slug);
 });
-
-// Render markdown content
 const renderedContent = computed(() => {
   if (!post.value?.content) return '';
   return marked(post.value.content);
 });
 
-// Format date for display
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  return moment(date).format('D MMMM, YYYY');
 };
-
-// Set page metadata
 useHead(() => ({
   title: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time',
   meta: [
