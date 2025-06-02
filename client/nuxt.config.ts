@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     prerender: {
       failOnError: false,
     },
-    compatibilityDate: '2025-05-30',
+    compatibilityDate: "2025-05-30",
   },
   devtools: { enabled: true },
   modules: [
@@ -30,9 +30,10 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
   runtimeConfig: {
     public: {
-      apiBase: process.env.NODE_ENV === "production" 
-        ? "https://ketankarki.wiki" 
-        : "http://localhost:3001",
+      apiBase:
+        process.env.NODE_ENV === "production"
+          ? "https://ketankarki.wiki"
+          : "http://localhost:3001",
     },
   },
 });

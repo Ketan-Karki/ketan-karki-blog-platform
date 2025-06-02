@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Slow Down Time - Start Script
+# Ketan Blog - Start Script
 # This script should be run on the server after code deployment
 
 set -e
 
-APP_DIR="/home/ketan/slow-down-time"
+APP_DIR="/home/ketan/ketan-blog"
 CLIENT_DIR="$APP_DIR/client"
 SERVER_DIR="$APP_DIR/server"
 
-echo "====== Starting Slow Down Time Application ======"
+echo "====== Starting Ketan Blog Application ======"
 
 # 1. Setup Server Environment
 echo "\n====== Setting up server environment ======"
@@ -39,12 +39,12 @@ echo "\n====== Starting applications with PM2 ======"
 
 # Start server
 cd "$SERVER_DIR"
-pm2 stop slow-down-time-server 2>/dev/null || true
-pm2 start npm --name "slow-down-time-server" -- run start:prod
+pm2 stop ketan-blog-server 2>/dev/null || true
+pm2 start npm --name "ketan-blog-server" -- run start:prod
 
 # Start client using the ecosystem config
 cd "$CLIENT_DIR"
-pm2 stop slow-down-time-client 2>/dev/null || true
+pm2 stop ketan-blog-client 2>/dev/null || true
 pm2 start ecosystem.config.js
 
 # 4. Save PM2 configuration to survive reboots

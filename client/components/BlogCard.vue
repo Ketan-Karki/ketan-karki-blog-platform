@@ -1,4 +1,3 @@
-<!-- filepath: /Users/ketan/Learning/Slow-Down-TIme/slow-down-time-client/components/BlogCard.vue -->
 <template>
   <NuxtLink
     :to="`/blog/${post.slug}`"

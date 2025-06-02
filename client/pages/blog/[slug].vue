@@ -27,7 +27,8 @@
         </div>
 
         <div class="prose prose-lg max-w-none">
-          <div v-html="renderedContent"></div>
+          <div v-if="post?.content" v-html="renderedContent"></div>
+          <p v-else class="text-gray-500">No content available</p>
         </div>
       </div>
 
@@ -43,7 +44,8 @@
 </template>
 
 <script setup>
-import { marked } from 'marked';
+import MarkdownIt from 'markdown-it';
+import highlightjs from 'markdown-it-highlightjs';
 import moment from 'moment';
 
 const route = useRoute();
@@ -60,9 +62,21 @@ onMounted(async () => {
 const post = computed(() => {
   return blogStore.posts.find(p => p.slug === slug);
 });
+const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typographer: true,
+  breaks: true
+}).use(highlightjs, { inline: true });
+
 const renderedContent = computed(() => {
   if (!post.value?.content) return '';
-  return marked(post.value.content);
+  try {
+    return md.render(post.value.content);
+  } catch (error) {
+    console.error('Error parsing markdown:', error);
+    return `<p class="text-red-500">Error parsing markdown: ${error.message}</p>`;
+  }
 });
 
 const formatDate = (date) => {

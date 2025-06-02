@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "slow-down-time-client",
+      name: "ketan-blog-client",
       port: "3000",
       exec_mode: "cluster",
       instances: "max",
