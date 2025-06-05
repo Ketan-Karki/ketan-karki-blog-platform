@@ -1,10 +1,12 @@
 <template>
   <div class="flex flex-col min-h-screen bg-gray-50">
     <Header />
-    
+
     <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
       <div v-if="blogStore.loading" class="text-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"
+        ></div>
       </div>
 
       <div v-else-if="blogStore.error" class="text-center text-red-600 py-12">
@@ -13,11 +15,15 @@
 
       <div v-else-if="post" class="bg-white shadow-sm rounded-lg p-6 md:p-8">
         <div class="mb-6">
-          <span class="inline-block bg-primary-100 text-primary-700 text-sm px-3 py-1 rounded-full mb-4">
-            {{ post.category?.name || 'Uncategorized' }}
+          <span
+            class="inline-block bg-primary-100 text-primary-700 text-sm px-3 py-1 rounded-full mb-4"
+          >
+            {{ post.category?.name || "Uncategorized" }}
           </span>
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
-          
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            {{ post.title }}
+          </h1>
+
           <div class="flex items-center text-sm text-gray-500 mb-6">
             <time :datetime="post.publishedAt" class="mr-4">
               {{ formatDate(post.publishedAt) }}
@@ -34,7 +40,9 @@
 
       <div v-else class="text-center py-12">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Post not found</h2>
-        <p class="text-gray-600 mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
+        <p class="text-gray-600 mb-6">
+          The blog post you're looking for doesn't exist or has been removed.
+        </p>
         <NuxtLink to="/" class="btn-primary">Return to Home</NuxtLink>
       </div>
     </main>
@@ -44,9 +52,9 @@
 </template>
 
 <script setup>
-import MarkdownIt from 'markdown-it';
-import highlightjs from 'markdown-it-highlightjs';
-import moment from 'moment';
+import MarkdownIt from "markdown-it";
+import highlightjs from "markdown-it-highlightjs";
+import moment from "moment";
 
 const route = useRoute();
 const blogStore = useBlogStore();
@@ -61,10 +69,10 @@ onMounted(async () => {
   if (!blogStore.posts.length) {
     await blogStore.fetchPosts();
   }
-  
+
   // Try to find the post in the store first
-  const foundPost = blogStore.posts.find(p => p.slug === slug);
-  
+  const foundPost = blogStore.posts.find((p) => p.slug === slug);
+
   if (foundPost) {
     post.value = foundPost;
   } else {
@@ -79,67 +87,77 @@ const md = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
-  breaks: true
+  breaks: true,
 }).use(highlightjs, { inline: true });
 
 const renderedContent = computed(() => {
-  if (!post.value?.content) return '';
+  if (!post.value?.content) return "";
   try {
     return md.render(post.value.content);
   } catch (error) {
-    console.error('Error parsing markdown:', error);
+    console.error("Error parsing markdown:", error);
     return `<p class="text-red-500">Error parsing markdown: ${error.message}</p>`;
   }
 });
 
 const formatDate = (date) => {
-  return moment(date).format('D MMMM, YYYY');
+  return moment(date).format("D MMMM, YYYY");
 };
 useHead(() => ({
-  title: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time',
+  title: post.value
+    ? `${post.value.title} - Slow Down Time`
+    : "Post Not Found - Slow Down Time",
   meta: [
     {
-      name: 'description',
-      content: post.value?.excerpt || 'Blog post not found'
+      name: "description",
+      content: post.value?.excerpt || "Blog post not found",
     },
     // Open Graph meta tags for social media sharing
     {
-      property: 'og:title',
-      content: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time'
+      property: "og:title",
+      content: post.value
+        ? `${post.value.title} - Slow Down Time`
+        : "Post Not Found - Slow Down Time",
     },
     {
-      property: 'og:description',
-      content: post.value?.excerpt || 'Blog post not found'
+      property: "og:description",
+      content: post.value?.excerpt || "Blog post not found",
     },
     {
-      property: 'og:type',
-      content: 'article'
+      property: "og:type",
+      content: "article",
     },
     {
-      property: 'og:url',
-      content: `https://ketankarki.wiki/blog/${slug}`
+      property: "og:url",
+      content: `https://ketankarki.wiki/blog/${slug}`,
     },
     {
-      property: 'og:image',
-      content: post.value?.coverImage?.url || 'https://ketankarki.wiki/images/default-og-image.png'
+      property: "og:image",
+      content:
+        post.value?.coverImage?.url ||
+        "https://ketankarki.wiki/images/default-og-image.png",
     },
     // Twitter Card meta tags
     {
-      name: 'twitter:card',
-      content: 'summary_large_image'
+      name: "twitter:card",
+      content: "summary_large_image",
     },
     {
-      name: 'twitter:title',
-      content: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time'
+      name: "twitter:title",
+      content: post.value
+        ? `${post.value.title} - Slow Down Time`
+        : "Post Not Found - Slow Down Time",
     },
     {
-      name: 'twitter:description',
-      content: post.value?.excerpt || 'Blog post not found'
+      name: "twitter:description",
+      content: post.value?.excerpt || "Blog post not found",
     },
     {
-      name: 'twitter:image',
-      content: post.value?.coverImage?.url || 'https://ketankarki.wiki/images/default-og-image.png'
-    }
-  ]
+      name: "twitter:image",
+      content:
+        post.value?.coverImage?.url ||
+        "https://ketankarki.wiki/images/default-og-image.png",
+    },
+  ],
 }));
 </script>

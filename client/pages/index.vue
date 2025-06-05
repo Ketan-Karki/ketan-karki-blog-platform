@@ -60,7 +60,8 @@ useHead({
   meta: [
     {
       name: "description",
-      content: "A personal blog about development, life, and everything in between.",
+      content:
+        "A personal blog about development, life, and everything in between.",
     },
     // Open Graph meta tags
     {
@@ -69,7 +70,8 @@ useHead({
     },
     {
       property: "og:description",
-      content: "A personal blog about development, life, and everything in between.",
+      content:
+        "A personal blog about development, life, and everything in between.",
     },
     {
       property: "og:type",
@@ -94,7 +96,8 @@ useHead({
     },
     {
       name: "twitter:description",
-      content: "A personal blog about development, life, and everything in between.",
+      content:
+        "A personal blog about development, life, and everything in between.",
     },
     {
       name: "twitter:image",
