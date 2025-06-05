@@ -60,8 +60,45 @@ useHead({
   meta: [
     {
       name: "description",
-      content:
-        "A personal blog about development, life, and everything in between.",
+      content: "A personal blog about development, life, and everything in between.",
+    },
+    // Open Graph meta tags
+    {
+      property: "og:title",
+      content: "Ketan's Blog - Personal Blog",
+    },
+    {
+      property: "og:description",
+      content: "A personal blog about development, life, and everything in between.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://ketankarki.wiki/",
+    },
+    {
+      property: "og:image",
+      content: "https://ketankarki.wiki/images/default-og-image.png",
+    },
+    // Twitter Card meta tags
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Ketan's Blog - Personal Blog",
+    },
+    {
+      name: "twitter:description",
+      content: "A personal blog about development, life, and everything in between.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://ketankarki.wiki/images/default-og-image.png",
     },
   ],
 });

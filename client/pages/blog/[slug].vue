@@ -53,14 +53,27 @@ const blogStore = useBlogStore();
 
 const { slug } = route.params;
 
+// onMounted moved to the post fetching logic above
+
+const post = ref(null);
+
 onMounted(async () => {
   if (!blogStore.posts.length) {
     await blogStore.fetchPosts();
   }
-});
-
-const post = computed(() => {
-  return blogStore.posts.find(p => p.slug === slug);
+  
+  // Try to find the post in the store first
+  const foundPost = blogStore.posts.find(p => p.slug === slug);
+  
+  if (foundPost) {
+    post.value = foundPost;
+  } else {
+    // If not found in store, fetch it directly
+    await blogStore.fetchPost(slug);
+    if (blogStore.currentPost) {
+      post.value = blogStore.currentPost;
+    }
+  }
 });
 const md = new MarkdownIt({
   html: true,
@@ -88,6 +101,44 @@ useHead(() => ({
     {
       name: 'description',
       content: post.value?.excerpt || 'Blog post not found'
+    },
+    // Open Graph meta tags for social media sharing
+    {
+      property: 'og:title',
+      content: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time'
+    },
+    {
+      property: 'og:description',
+      content: post.value?.excerpt || 'Blog post not found'
+    },
+    {
+      property: 'og:type',
+      content: 'article'
+    },
+    {
+      property: 'og:url',
+      content: `https://ketankarki.wiki/blog/${slug}`
+    },
+    {
+      property: 'og:image',
+      content: post.value?.coverImage?.url || 'https://ketankarki.wiki/images/default-og-image.png'
+    },
+    // Twitter Card meta tags
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: post.value ? `${post.value.title} - Slow Down Time` : 'Post Not Found - Slow Down Time'
+    },
+    {
+      name: 'twitter:description',
+      content: post.value?.excerpt || 'Blog post not found'
+    },
+    {
+      name: 'twitter:image',
+      content: post.value?.coverImage?.url || 'https://ketankarki.wiki/images/default-og-image.png'
     }
   ]
 }));
