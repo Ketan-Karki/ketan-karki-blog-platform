@@ -1,11 +1,13 @@
 <template>
-  <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+  <div
+    class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
+  >
     <div class="p-5 flex-grow">
       <!-- Tweet Header -->
       <div class="flex items-center mb-4">
         <div class="flex-shrink-0">
           <img
-            src="~/assets/Octocat Build.png"
+            src="~/public/images/profile.png"
             alt="Ketan Karki"
             class="h-11 w-11 rounded-full ring-2 ring-indigo-50"
           />
@@ -19,7 +21,9 @@
 
       <!-- Tweet Content -->
       <div class="mb-4">
-        <p class="text-gray-800 whitespace-pre-wrap text-base leading-relaxed">{{ tweet.text }}</p>
+        <p class="text-gray-800 whitespace-pre-wrap text-base leading-relaxed">
+          {{ tweet.text }}
+        </p>
       </div>
 
       <!-- Tweet Date -->
@@ -44,7 +48,9 @@
               d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
             />
           </svg>
-          <span class="group-hover:text-indigo-500 transition-colors">{{ tweet.publicMetrics?.reply_count || 0 }}</span>
+          <span class="group-hover:text-indigo-500 transition-colors">{{
+            tweet.publicMetrics?.reply_count || 0
+          }}</span>
         </div>
         <div class="flex items-center group">
           <svg
@@ -61,7 +67,9 @@
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
-          <span class="group-hover:text-indigo-500 transition-colors">{{ tweet.publicMetrics?.retweet_count || 0 }}</span>
+          <span class="group-hover:text-indigo-500 transition-colors">{{
+            tweet.publicMetrics?.retweet_count || 0
+          }}</span>
         </div>
         <div class="flex items-center group">
           <svg
@@ -78,7 +86,9 @@
               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
             />
           </svg>
-          <span class="group-hover:text-indigo-500 transition-colors">{{ tweet.publicMetrics?.like_count || 0 }}</span>
+          <span class="group-hover:text-indigo-500 transition-colors">{{
+            tweet.publicMetrics?.like_count || 0
+          }}</span>
         </div>
       </div>
     </div>
