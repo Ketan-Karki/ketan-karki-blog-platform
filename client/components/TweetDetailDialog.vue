@@ -41,9 +41,6 @@
           <!-- Day badge -->
           <div class="mb-4 flex items-center justify-between">
             <div class="flex items-center">
-              <div class="bg-primary-600 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-sm">
-                Day {{ tweet?.dayNumber || '?' }}
-              </div>
               <time
                 :datetime="tweet?.createdAt"
                 class="ml-3 text-sm text-gray-500"
