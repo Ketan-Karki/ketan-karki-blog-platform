@@ -92,19 +92,25 @@
           <p class="text-gray-500 mb-4">
             Subscribe to get notified about new posts and updates.
           </p>
-          <form class="flex flex-col sm:flex-row gap-2">
+          <form @submit.prevent="subscribeToNewsletter" class="flex flex-col sm:flex-row gap-2">
             <input
+              v-model="email"
               type="email"
               placeholder="Your email"
+              required
               class="px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
             <button
               type="submit"
-              class="px-4 py-2 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              :disabled="isLoading"
+              class="px-4 py-2 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Subscribe
+              {{ isLoading ? 'Subscribing...' : 'Subscribe' }}
             </button>
           </form>
+          <div v-if="subscriptionMessage" class="mt-2 text-sm" :class="subscriptionSuccess ? 'text-green-600' : 'text-red-600'">
+            {{ subscriptionMessage }}
+          </div>
         </div>
       </div>
 
@@ -119,6 +125,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRuntimeConfig } from 'nuxt/app';
+
 const navItems = [
   { name: "Home", path: "/" },
   { name: "Daily Blog", path: "/daily-blog" },
@@ -126,4 +135,52 @@ const navItems = [
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
+
+const email = ref('');
+const isLoading = ref(false);
+const subscriptionMessage = ref('');
+const subscriptionSuccess = ref(false);
+
+async function subscribeToNewsletter() {
+  if (!email.value) return;
+  
+  try {
+    isLoading.value = true;
+    subscriptionMessage.value = '';
+    
+    const config = useRuntimeConfig();
+    const response = await fetch(`${config.public.apiBase}/api/subscribers`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email.value }),
+    });
+    
+    const data = await response.json();
+    console.log('Subscription API response:', data);
+    
+    if (response.ok) {
+      subscriptionSuccess.value = true;
+      subscriptionMessage.value = data.message;
+      email.value = '';
+    } else {
+      subscriptionSuccess.value = false;
+      subscriptionMessage.value = data.message || 'Failed to subscribe. Please try again.';
+    }
+  } catch (err) {
+    console.error('Error subscribing:', err);
+    subscriptionSuccess.value = false;
+    subscriptionMessage.value = 'An error occurred. Please try again later.';
+  } finally {
+    isLoading.value = false;
+    
+    // Clear success message after 5 seconds
+    if (subscriptionSuccess.value) {
+      setTimeout(() => {
+        subscriptionMessage.value = '';
+      }, 5000);
+    }
+  }
+}
 </script>

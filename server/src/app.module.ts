@@ -7,6 +7,7 @@ import { SeedModule } from "./database/seeds/seed.module";
 import { HashnodeModule } from "./hashnode/hashnode.module";
 import { TwitterModule } from "./twitter/twitter.module";
 import { TILModule } from "./til/til.module";
+import { SubscribersModule } from "./subscribers/subscribers.module";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TILModule } from "./til/til.module";
     HashnodeModule,
     TwitterModule,
     TILModule,
+    SubscribersModule,
     SeedModule,
   ],
 })
